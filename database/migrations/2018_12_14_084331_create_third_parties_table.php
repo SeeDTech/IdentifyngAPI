@@ -18,6 +18,7 @@ class CreateThirdPartiesTable extends Migration
             $table->string("name")->unique();
             $table->string("code")->unique();
             $table->string("phone")->unique();
+            $table->string("image");
             $table->timestamps();
         });
     }

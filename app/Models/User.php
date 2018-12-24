@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,34 +14,38 @@ class User extends Authenticatable
      *
      * @var array
      */
+
     protected $fillable = [
 
-        'user_id',
-        'lname',
-        'sname',
-        'mname',
-        'email',
+        'id',
+        'first_name',
+        'last_name',
+        'middle_name',
         'gender',
         'dob',
         'state',
         'lga',
         'bvn',
         'phone',
-        'qrcode',
-        'password',
-        'user_token',
         'role',
-        'image',
-        'address'
+        'qrcode',
+        'api_token',
+        'address',
+        'image'
     ];
 
-     public function generateToken()
+    public function generateToken()
     {
-        $this->user_token = str_random(60);
+        $this->api_token = str_random(60);
         $this->save();
 
-        return $this->user_token;
+        return $this->api_token;
     }
+
+    public function thirdParties()
+  	{
+      	return $this->belongsToMany(ThirdParty::class);
+  	}
 
     
 
