@@ -21,7 +21,9 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 // Route::resource('/thirdparties', 'ThirdPartyController');  
 
 Route::resource('subscriptions', 'SubscriptionController');
-
+Route::middleware('api')->get('/hello_world', function () {
+    return json_encode(['message' => 'hello world']);
+});
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

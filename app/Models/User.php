@@ -14,9 +14,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-
     protected $fillable = [
-
         'id',
         'first_name',
         'last_name',
@@ -46,8 +44,6 @@ class User extends Authenticatable
   	{
       	return $this->belongsToMany(ThirdParty::class);
   	}
-
-    
 
     /**
      * The attributes that should be hidden for arrays.
