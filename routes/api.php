@@ -19,11 +19,19 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 
 // Route::resource('/users', 'UserApiController');
 // Route::resource('/thirdparties', 'ThirdPartyController');  
+// Route::post('register', 'AuthController@register');
+// Route::post('login', 'AuthController@login');
+// Route::post('recover', 'AuthController@recover');
+// Route::group(['middleware' => ['jwt.auth']], function() {
+//     Route::get('logout', 'AuthController@logout');
+// });
 
-Route::resource('subscriptions', 'SubscriptionController');
-Route::middleware('api')->get('/hello_world', function () {
-    return json_encode(['message' => 'hello world']);
-});
+// Route::group(['middleware' => ['jwt.auth']], function() {
+//     Route::get('logout', 'AuthController@logout');
+//     Route::get('test', function(){
+//         return response()->json(['foo'=>'bar']);
+//     });
+// });
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

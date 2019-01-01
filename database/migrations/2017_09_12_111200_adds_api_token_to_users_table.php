@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAccountOtpTable extends Migration
+class AddsApiTokenToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateAccountOtpTable extends Migration
      */
     public function up()
     {
-        Schema::create('account_otp', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('otp');
-            $table->string('phone');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('api_token', 60)->unique()->nullable();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateAccountOtpTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('account_otp');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['api_token']);
+        });
     }
 }
