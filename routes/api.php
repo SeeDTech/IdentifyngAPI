@@ -17,6 +17,36 @@ header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Conte
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 
 
+Route::get('open', 'Api\DataController@open');
+Route::post('register', 'Api\UserController@register');
+
+Route::group(['middleware' => ['jwt.auth']], function() {
+    
+    Route::post('login', 'Api\UserController@authenticate');
+    Route::get('user', 'Api\UserController@getAuthenticatedUser');
+    Route::get('closed', 'Api\DataController@closed');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Route::resource('/users', 'UserApiController');
 // Route::resource('/thirdparties', 'ThirdPartyController');  
 // Route::post('register', 'AuthController@register');

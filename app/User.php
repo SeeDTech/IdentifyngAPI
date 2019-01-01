@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
