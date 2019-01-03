@@ -19,6 +19,7 @@ class CreateIdholdersTable extends Migration
             $table->string('last_name');
             $table->string('middle_name')->nullable();
             $table->date('dob');
+            $table->string('image');
             $table->string('bvn')->unique();
             $table->string('qrcode')->unique()->nullable();
             $table->text('address');
