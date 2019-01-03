@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@identify.com',
             'is_admin' => true,
         ]);
+        $this->call(LaratrustSeeder::class);
     }
 }

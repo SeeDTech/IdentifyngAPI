@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
-
+    use LaratrustUserTrait;
     /**
      * The attributes that are mass assignable.
      *
