@@ -20,6 +20,7 @@ class CreateIdprovidersTable extends Migration
             $table->string('rc_number');
             $table->string('address');
             $table->string('name');
+            $table->string('image');
             $table->timestamps();
         });
     }

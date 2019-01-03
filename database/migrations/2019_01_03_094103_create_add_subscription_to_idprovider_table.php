@@ -38,6 +38,8 @@ class CreateAddSubscriptionToIdproviderTable extends Migration
     {
         Schema::table('idproviders', function (Blueprint $table) {
             //
+            $table->dropForeign('idproviders_subscription_id_foreign');
+            $table->dropIndex('idproviders_subscription_id_index');
             $table->dropColumn('subscription_id');
         });
     }
