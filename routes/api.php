@@ -12,90 +12,119 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+// header('Access-Control-Allow-Origin: *');
+// header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization");
+// header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 
 
-Route::get('open', 'Api\DataController@open');
-Route::post('register', 'Api\UserController@register');
+// V1 Routes
+Route::group(['prefix' => 'v1'], function () {
+	
+	// Auth routes
+	Route::post('/register', 'API\UserController@register');
+    Route::post('/login', 'API\UserController@login');
+
+	// The below is a web route. It has to go
+	// Route::post('/recover', 'API\UsersController@recover');
+
+	// Route that shouldn't refresh token
+	Route::group(['middleware' => ['jwt.auth']], function() {
+		Route::get('/logout', 'API\UserController@logout');
+		Route::get('user', 'Api\UserController@getAuthUser');
+	});
+
+	// Routes that require authentication and refreshes token
+	Route::group(['middleware' => ['jwt.auth', 'jwt.refresh']], function () {
+		// User routes
+		Route::group(['prefix' => 'users', 'middleware' => 'check.users'], function () {
+			Route::get('/{id}', [
+				'as' => 'users.show',
+				'uses' => 'API\UserController@show'
+			]);
+			Route::put('/{id}', 'API\UserController@update');
+		});
+		// Ping route to refresh token
+		Route::get('/ping', 'API\UserController@ping');
+	});
+
+    // Public routes        
+    Route::get('open', 'Api\DataController@open');
+	
+});
 
 Route::group(['middleware' => ['jwt.auth']], function() {
-    
-    Route::post('login', 'Api\UserController@authenticate');
-    Route::get('user', 'Api\UserController@getAuthenticatedUser');
     Route::get('closed', 'Api\DataController@closed');
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Route::resource('/users', 'UserApiController');
-// Route::resource('/thirdparties', 'ThirdPartyController');  
-// Route::post('register', 'AuthController@register');
-// Route::post('login', 'AuthController@login');
-// Route::post('recover', 'AuthController@recover');
-// Route::group(['middleware' => ['jwt.auth']], function() {
-//     Route::get('logout', 'AuthController@logout');
-// });
 
-// Route::group(['middleware' => ['jwt.auth']], function() {
-//     Route::get('logout', 'AuthController@logout');
-//     Route::get('test', function(){
-//         return response()->json(['foo'=>'bar']);
-//     });
-// });
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
-// Route::post('/login', function (Request $request) {
-    
-//     if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-//         // Authentication passed...
-//         $user = auth()->user();
-//         $user->generateToken();
-//         $user->save();
-//         return $user;
-//     }
-    
-//     return response()->json([
-//         'error' => 'Unauthenticated user',
-//         'code' => 401,
-//     ], 401);
-// });
 
-// Route::middleware('auth:api')->post('/logout', function (Request $request) {
-    
-//     if (auth()->user()) {
-//         $user = auth()->user();
-//         $user->user_token = null; // clear user_token
-//         $user->save();
 
-//         return response()->json([
-//             'message' => 'Thank you for using our Mobile Platform',
-//         ]);
-//     }
-    
-//     return response()->json([
-//         'error' => 'Unable to logout user',
-//         'code' => 401,
-//     ], 401);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Route::group([
+
+//     'middleware' => 'api',
+//     'namespace' => 'App\Http\Controllers',
+//     'prefix' => 'auth'
+
+// ], function ($router) {
+
+//     Route::post('login', 'AuthController@login');
+//     Route::post('logout', 'AuthController@logout');
+//     Route::post('refresh', 'AuthController@refresh');
+//     Route::post('me', 'AuthController@me');
+
 // });

@@ -11,19 +11,14 @@
 
 class UserController extends Controller
 {
-    public function authenticate(Request $request)
+    /**
+     * This is just a dummy to refresh token
+     * GET /ping
+     * @return [type] [description]
+     */
+    public function ping()
     {
-        $credentials = $request->only('email', 'password');
-
-        try {
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
-        }
-
-        return response()->json(compact('token'));
+        return $this->respondSuccess('Pong!');
     }
 
      /**
@@ -97,5 +92,16 @@ class UserController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(['success' => false, 'error' => 'Failed to logout, please try again.'], 500);
         }
+    }
+
+    public function getAuthUser(Request $request)
+    {
+        // $this->validate($request, [
+        //     'token' => 'required'
+        // ]);
+ 
+        $user = JWTAuth::authenticate($request->token);
+ 
+        return response()->json(['user' => $user]);
     }
 }
