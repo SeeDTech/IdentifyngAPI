@@ -19,7 +19,10 @@ use Illuminate\Http\Request;
 
 // V1 Routes
 Route::group(['prefix' => 'v1'], function () {
-	
+
+	//account generation
+	Route::post('/sendotp', 'SmsController@index');
+
 	// Auth routes
 	Route::post('/register', 'API\UserController@register');
     Route::post('/login', 'API\UserController@login');
@@ -57,62 +60,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 });
 
 // Route::resource('/users', 'UserApiController');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Route::group([
 
