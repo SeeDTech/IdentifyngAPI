@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class SmsController extends Controller
 {
-    private $username   = "identifyng";
-    private $apiKey     = "67202e15d0c39ddb376eb461ca51f5368e17119f0cbb148f326152480e266e00";
+    private $username   = "IdentifyNg.";
+    private $apiKey     = "6de0d40e21ad45814e423d42e3b4caa494d43793fe37744828f467021da9c41d";
 
     public function generateOtp($len){
         $result = '';
@@ -18,6 +18,19 @@ class SmsController extends Controller
         }
         return $result;
     }
+
+    // public function resolvephone($phone_number)
+    // {
+    //     $NGdialcode = '+234';
+    //     $contains = strpos($phone_number, $NGdialcode);
+    //     if($contains===true){
+    //         return $phone_number;
+    //     }else{
+    //         $phone_number = substr($phone_number, 1);
+    //          $phone_number = $NGdialcode.$phone_number;
+    //          return $phone_number; 
+    //     }
+    // }
 
     public function index(Request $request){
 
@@ -36,19 +49,20 @@ class SmsController extends Controller
             ]);
         }
 
-        $otp = $this->generateOtp(6);
-
+        $otp = $this->generateOtp(4);
+        // $phone =$this->resolvephone($phone);
         $sent = $this->sendSms($phone, $otp);
         if($sent == 1){
-            $id = DB::table('account_otp')->insertGetId(
-                ['otp' => $otp, 'bvn' => $bvn, 'phone' => $phone]
-            );
+            $id=true;
+            // $id = DB::table('account_otp')->insertGetId(
+            //     ['otp' => $otp, 'bvn' => $bvn, 'phone' => $phone]
+            // );
             if($id)
             {
                 return response()->json([
                     'message' => 'success',
-                    'name' => $bvn,
-                    'phone' => $phone,
+                    // 'name' => $bvn,
+                    // 'phone' => $phone,
                     'otp' => $otp
                 ]);
             }
