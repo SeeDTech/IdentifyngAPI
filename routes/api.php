@@ -23,6 +23,11 @@ Route::group(['prefix' => 'v1'], function () {
 	// account generation
 	Route::post('/sendotp', 'SmsController@index');
 	Route::get('/testotp', 'SmsController@testOtp');
+
+	// forget password route
+	Route::post('/initiate', 'SmsController@initiateForgetPassword');
+	Route::get('/resetpassword', 'SmsController@passwordReset');
+
 	// Auth routes
 	Route::post('/register', 'API\UserController@register');
     Route::post('/login', 'API\UserController@login');

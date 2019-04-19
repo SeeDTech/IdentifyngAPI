@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use AfricasTalking\SDK\AfricasTalking;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class SmsController extends Controller
 {
@@ -80,6 +81,75 @@ class SmsController extends Controller
                 'phone' => $phone
             ]);
         } 
+    }
+
+    public function initiateForgetPassword(Request $request){
+        
+        $email = $request->get("email");
+        $account = DB::table('users')
+                     ->where('email', $email)
+                     ->get();
+
+        if($accounts->first()){
+            $phone = $accounts->phone;
+            $otp = $this->generateOtp(4);
+            // $phone =$this->resolvephone($phone);
+            $sent = $this->sendSms($phone, $otp);
+
+            if($sent == 1){
+
+                $id = DB::table('forget_password_otp')->insertGetId(
+                    ['otp' => $otp, 'phone' => $phone]
+                );
+                if($id)
+                {
+                    return response()->json([
+                        'message' => 'success',
+                        'otp' => $otp
+                    ], 200);
+                }
+                else{
+                    return response()->json([
+                        'message' => 'could not insert the record',
+                    ],406);
+                }  
+            }else{
+                return response()->json([
+                    'message' => 'could not send the sms'
+                ], 406);
+            }
+        }else{
+            return response()->json([
+                'message' => 'There is no user with that email'
+            ], 406);
+        } 
+    }
+
+    public function passwordReset(Request $request){
+        
+        $password = $request->password;
+        $email = $request->email;
+        $hashedPassword = Hash::make($password);
+
+        $account = DB::table('users')
+                     ->where('email', $email)
+                     ->get();
+
+        if($account->first()){
+            $user = User::findOrFail($account->id);
+            $user->password = $hashedPassword;
+
+            $user->save();
+
+            return response()->json([
+                'message' => 'Password changed successfully'
+            ], 200);
+        }else{
+            return response()->json([
+                'message' => 'User not found'
+            ], 406);
+        }
+        
     }
 
     public function sendSms($recipients, $otp){
